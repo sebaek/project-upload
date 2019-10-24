@@ -71,7 +71,7 @@ public class UploadController extends HttpServlet {
 
 		session.setAttribute("name", name);
 		session.setAttribute("message",
-				"<i class=\"material-icons\">sentiment_very_satisfied</i> " + numOfFiles + "개 파일을 전송 성공하였습니다.");
+				"<i class=\"material-icons\">sentiment_very_satisfied</i> " + numOfFiles + "개 파일을 전송하였습니다.");
 		if (numOfFiles == 0) {
 			session.setAttribute("message", "<i class=\"material-icons\">sentiment_neutral</i> " + "전송된 파일이 없습니다.");
 		}
