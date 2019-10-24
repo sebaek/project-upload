@@ -49,7 +49,12 @@
 
 	});
 </script>
+<style>
+.file-field .file-path-wrapper {
+    padding-left: 0px;
+}
 
+</style>
 
 <title>프로젝트 파일 업로드</title>
 </head>
