@@ -20,50 +20,62 @@ import javax.servlet.http.Part;
 @MultipartConfig
 public class UploadController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public UploadController() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public UploadController() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		request.setCharacterEncoding("utf-8");
+
+		int numOfFiles = 0;
 		String name = request.getParameter("name");
 //		Part file = request.getPart("files");
 		Collection<Part> parts = request.getParts();
 		System.out.println(name);
-		
+
 		File folder = new File("C:\\Users\\user\\Documents\\projects20191025" + File.separator + name);
 		System.out.println(folder.getName());
 		System.out.println(folder.getAbsolutePath());
 		if (!folder.exists()) {
 			folder.mkdirs();
 		}
-		
+
 		for (Part part : parts) {
 			String filename = part.getSubmittedFileName();
-			if (filename != null) {
+			if (!(filename == null || filename.trim().isEmpty())) {
 				part.write(folder.getAbsolutePath() + File.separator + filename);
+				numOfFiles++;
 			}
 		}
-		
+
 		session.setAttribute("name", name);
-		session.setAttribute("message", "<i class=\"material-icons\">sentiment_very_satisfied</i> 전송 성공하였습니다.");
+		session.setAttribute("message",
+				"<i class=\"material-icons\">sentiment_very_satisfied</i> " + numOfFiles + "개 파일을 전송 성공하였습니다.");
+		if (numOfFiles == 0) {
+			session.setAttribute("message", "<i class=\"material-icons\">sentiment_neutral</i> " + "전송된 파일이 없습니다.");
+		}
+
 //		session.setAttribute("message", "전송에 실패하였습니다.");
 		response.sendRedirect(request.getContextPath() + "/");
 	}
